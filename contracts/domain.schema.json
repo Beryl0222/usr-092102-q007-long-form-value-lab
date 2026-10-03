@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "长内容价值实验室领域事件",
+  "description": "信封层只约束跨服务交换的稳定字段；各事件类型的 payload 结构由 src/long_lab/contracts.py 的 PAYLOAD_CONTRACTS 注册表作为 SSOT 并与本文件一致性互校。新增字段必须 additive，禁止重命名既有枚举。",
   "type": "object",
   "required": [
     "event_id",
@@ -14,7 +15,8 @@
   "properties": {
     "event_id": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "全局幂等键，由事件库按 (aggregate_type, aggregate_id, version) 内容确定性派生，重放不产生重复。"
     },
     "event_type": {
       "type": "string",
@@ -23,7 +25,21 @@
         "EXPERIMENT_ASSIGNED",
         "RISK_ACTION_APPLIED",
         "WINDOW_CLOSED",
-        "POLICY_DECIDED"
+        "POLICY_DECIDED",
+        "CONTENT_VERSION_PUBLISHED",
+        "CONTENT_VERSION_SUPERSEDED",
+        "CREATOR_CONTROL_DECLARED",
+        "EXPOSURE_RECORDED",
+        "SIGNAL_RECLASSIFIED",
+        "EXPERIMENT_OPENED",
+        "EXPERIMENT_PAUSED",
+        "EXPERIMENT_RESUMED",
+        "EXPERIMENT_CLOSED",
+        "WINDOW_PARTIALLY_CORRECTED",
+        "OBJECTIVE_VERSIONED",
+        "KILL_SWITCH_TRIGGERED",
+        "FAIRNESS_SNAPSHOTTED",
+        "APPEAL_DECIDED"
       ]
     },
     "aggregate_type": {
@@ -32,7 +48,12 @@
         "content_version",
         "signal_window",
         "experiment_assignment",
-        "policy_decision"
+        "policy_decision",
+        "creator",
+        "experiment",
+        "exposure",
+        "objective",
+        "appeal"
       ]
     },
     "aggregate_id": {
@@ -45,11 +66,21 @@
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "description": "聚合内乐观并发版本，从 1 起严格递增。"
     },
     "summary": {
       "type": "string",
       "minLength": 1
+    },
+    "payload": {
+      "type": "object",
+      "description": "类型化负载，结构见 src/long_lab/contracts.py。"
+    },
+    "caused_by": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "因果前驱事件 id（如再分类、纠正、止损、申诉裁决所针对的原事件）。"
     }
   },
   "additionalProperties": true

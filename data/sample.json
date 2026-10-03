@@ -1,9 +1,18 @@
 {
-  "event_id": "092102-007-sample-001",
-  "event_type": "SIGNAL_RECORDED",
-  "aggregate_type": "content_version",
-  "aggregate_id": "long_form_value_lab-001",
+  "event_id": "evt_092102classicsample0001a2b3c4d5e6",
+  "event_type": "EXPERIMENT_ASSIGNED",
+  "aggregate_type": "experiment_assignment",
+  "aggregate_id": "exp-classic-text:u_a1b2c3d4e5f60718",
   "occurred_at": "2026-09-20T12:00:00+08:00",
   "version": 1,
-  "summary": "长内容价值实验室领域样例"
+  "summary": "分配 treatment（桶 1）",
+  "payload": {
+    "experiment_id": "exp-classic-text",
+    "user_pseudo": "u_a1b2c3d4e5f60718",
+    "arm": "treatment",
+    "bucket": 1,
+    "salt": "salt-2026-09",
+    "assignment_ts": "2026-09-20T12:00:00+08:00",
+    "after_resume": false
+  }
 }
